@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "[*] docker build -t geth_init geth_init"
-docker build -t geth_init geth_init
+docker build -t geth_init geth_init --no-cache
 echo "[*] docker run -d --name geth_init -v $PWD/geth:/tmp geth_init"
 docker run -d --name geth_init -v $PWD/geth:/tmp geth_init
 
