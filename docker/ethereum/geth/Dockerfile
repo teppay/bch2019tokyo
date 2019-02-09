@@ -7,3 +7,7 @@ COPY ./genesis.json /root/.ethereum/
 RUN geth --datadir /root/.ethereum init /root/.ethereum/genesis.json
 
 VOLUME ["/root/.ethereum"]
+
+EXPOSE 8545
+EXPOSE 8546
+EXPOSE 30303
