@@ -11,8 +11,8 @@ services:
       --nodiscover
       --maxpeers=25
       --datadir=/root/.ethereum
-      --mine
-      --minerthreads=1
+      # --mine
+      # --minerthreads=1
       --rpc
       --rpcaddr=0.0.0.0
       --rpcport=8545
