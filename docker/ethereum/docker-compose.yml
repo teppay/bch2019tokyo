@@ -6,7 +6,8 @@ services:
     container_name: geth
     command: >
       --networkid 1220
-      --cache 2048
+      --syncmode=full
+      --cache 4098
       --nodiscover
       --maxpeers=25
       --datadir=/root/.ethereum
