@@ -1,3 +1,4 @@
 .DS_Store
 docker/ethereum/geth/.ethereum
 docker/ipfs/ipfs_dir
+docker/contents/workdir

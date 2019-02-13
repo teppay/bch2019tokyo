@@ -5,3 +5,5 @@ services:
     image: contents
     container_name: contents
     tty: true
+    volumes:
+      - ./workdir:/root/workdir
