@@ -7,3 +7,9 @@ services:
     tty: true
     volumes:
       - ./workdir:/root/workdir
+    networks:
+      - network1
+
+networks:
+  network1:
+    external: true

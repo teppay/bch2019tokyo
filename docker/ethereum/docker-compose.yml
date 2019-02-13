@@ -12,6 +12,7 @@ services:
       --maxpeers=25
       --datadir=/root/.ethereum
       --rpc
+      --rpcvhosts='*'
       --rpcaddr=0.0.0.0
       --rpcport=8545
       --rpccorsdomain='*'
@@ -22,3 +23,9 @@ services:
       - "30303:30303"
     volumes:
       - ./geth/.ethereum:/root/.ethereum
+    networks:
+      - network1
+
+networks:
+  network1:
+    external: true
