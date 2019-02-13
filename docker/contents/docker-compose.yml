@@ -1,0 +1,7 @@
+version: '3'
+services:
+  contents:
+    build: ./
+    image: contents
+    container_name: contents
+    tty: true
