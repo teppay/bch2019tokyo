@@ -8,13 +8,13 @@ contract Document {
   address owner;
   address [] publisher;
  
-  function getTitle() public{
+  function getTitle() public returns(string){
   }
  
-  function getAuthor() public{
+  function getAuthor() public returns(string []){
   }
  
-  function getSentence() public{
+  function getSentence() public returns(string []){
   }
   
   function setPublisher(address addr) onlyOwner {
