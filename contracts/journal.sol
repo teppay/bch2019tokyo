@@ -1,5 +1,7 @@
 pragma solidity ^0.5.1;
 
+import './document.sol';
+
 contract Journal {
   string title;
   address owner;
