@@ -4,6 +4,7 @@ contract Publisher {
   string Organization;
   string url;
   bytes certificates;
+  address owner;
   string [] journal;
   mapping (address=> string) journal;
   
