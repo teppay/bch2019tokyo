@@ -5,6 +5,6 @@ RUN /bin/bash -c \
      apt-get --yes install nginx;\
      apt-get --yes install curl; \
      apt-get --yes install lsof; \
-     service nginx start'
+     apt-get --yes install vim;'
 EXPOSE 80
 CMD ["tail", "-f", "dev/null"]
