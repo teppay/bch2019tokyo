@@ -1,0 +1,15 @@
+version: '3'
+services:
+  contents:
+    build: ./
+    image: contents
+    container_name: contents
+    tty: true
+    volumes:
+      - ./workdir:/root/workdir
+    networks:
+      - network1
+
+networks:
+  network1:
+    external: true
