@@ -3,13 +3,12 @@ pragma solidity ^0.5.1;
 import "./document.sol";
 
 contract Journal {
-    string title;
+    string title = "<Title>";
     address owner;
     address[] documents;
 
-    constructor(string memory _title) public {
+    constructor() public {
         owner = msg.sender;
-        title = _title;
     }
 
     function getTitle() public view returns(string memory) {
@@ -20,8 +19,10 @@ contract Journal {
         owner = addr;
     }
 
-    function setDocument(address addr) public onlyOwner {
+    function setDocument(address addr, string memory info) public onlyOwner {
         documents.push(addr);
+        Document doc = Document(addr);
+        doc.setArchive(info);
     }
 
     modifier onlyOwner {
