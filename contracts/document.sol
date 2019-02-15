@@ -1,19 +1,25 @@
 pragma solidity ^0.5.1;
 
 contract Document {
-    string title = "<Title>";
-    string[] authors = [<Authors>];
-    string[] sentences = [<Fuzzy Hash Values>];
+    string title;
+    string[] authors;
+    string[] sentences;
     address[] journals;
     address owner;
     string[] archives;
+    bool enclosed = false;
 
-    constructor() public {
+    constructor(string memory _title) public {
         owner = msg.sender;
+        title = _title;
     }
 
-    function getTitle() public view returns(string memory){
+    function getTitle() public view returns(string memory) {
         return title;
+    }
+
+    function addAuthor(string memory _author) public ownerUnenclosed {
+        authors.push(_author);
     }
 
     function getNumOfAuthors() public view returns(uint){
@@ -24,6 +30,10 @@ contract Document {
         return authors[index];
     }
 
+    function addSentences(string memory _sentence) public ownerUnenclosed {
+        sentences.push(_sentence);
+    }
+
     function getNumOfSentences() public view returns(uint){
         return sentences.length;
     }
@@ -32,11 +42,12 @@ contract Document {
         return sentences[index];
     }
 
-    function setJournal(address addr) public onlyOwner {
+    function addJournal(address addr) public onlyOwner {
         journals.push(addr);
+        enclosed = true;
     }
 
-    function setArchive(string memory info) public onlyJournal {
+    function addArchive(string memory info) public onlyJournal {
         archives.push(info);
     }
 
@@ -59,6 +70,11 @@ contract Document {
             require(msg.sender == journals[i], "only journal");
             i++;
         }
+        _;
+    }
+
+    modifier ownerUnenclosed {
+        require(enclosed == false, "owner enclosed");
         _;
     }
 }
