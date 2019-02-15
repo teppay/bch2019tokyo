@@ -1,8 +1,8 @@
 pragma solidity ^0.5.1;
 
 contract Publisher {
-    string organization = "<ORGANIZATION>";
-    string url = "<URL>";
+    string organization;
+    string url;
     bytes certificate;
     address owner;
     struct Journal {
@@ -11,8 +11,10 @@ contract Publisher {
     }
     Journal[] journals;
 
-    constructor() public {
+    constructor(string memory _organization, string memory _url) public {
         owner = msg.sender;
+        organization = _organization;
+        url = _url;
     }
 
     function getOrganization() public view returns(string memory) {
@@ -35,7 +37,7 @@ contract Publisher {
         owner = addr;
     }
 
-    function setJournal(address addr, string memory title) public onlyOwner {
+    function addJournal(address addr, string memory title) public onlyOwner {
         journals.push(Journal(addr, title));
     }
 
