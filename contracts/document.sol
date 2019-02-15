@@ -1,38 +1,51 @@
 pragma solidity ^0.5.1;
 
 contract Document {
-    string title;
-    string authors;
-    string sentences;
-    address[] journal;
+    string title = "<Title>";
+    string[] authors = [<Authors>];
+    string[] sentences = [<Fuzzy Hash Values>];
+    address[] journals;
     address owner;
-    address[] publisher;
+    string[] archives;
 
-    constructor(string memory _title, string memory _authors, string memory _sentences) public {
+    constructor() public {
         owner = msg.sender;
-        title = _title;
-        authors = _authors;
-        sentences = _sentences;
     }
 
     function getTitle() public view returns(string memory){
         return title;
     }
 
-    function getAuthor() public view  returns(string memory){
-        return authors;
+    function getNumOfAuthors() public view returns(uint){
+        return authors.length;
     }
 
-    function getSentence() public view returns(string memory){
-        return sentences;
+    function getAuthor(uint index) public view returns(string memory){
+        return authors[index];
     }
 
-    function setPublisher(address addr) public onlyOwner {
-        publisher.push(addr);
+    function getNumOfSentences() public view returns(uint){
+        return sentences.length;
     }
 
-    function setJournal(address addr) public onlyPublisher {
-        journal.push(addr);
+    function getSentence(uint index) public view returns(string memory){
+        return sentences[index];
+    }
+
+    function setJournal(address addr) public onlyOwner {
+        journals.push(addr);
+    }
+
+    function setArchive(string memory info) public onlyJournal {
+        archives.push(info);
+    }
+
+    function getNumOfArchives() public view returns(uint){
+        return archives.length;
+    }
+
+    function getArchive(uint index) public view returns(string memory){
+        return archives[index];
     }
 
     modifier onlyOwner {
@@ -40,10 +53,10 @@ contract Document {
         _;
     }
 
-    modifier onlyPublisher {
+    modifier onlyJournal {
         uint i = 0;
-        while(i < publisher.length){
-            require(msg.sender == publisher[i], "only publisher");
+        while(i < journals.length){
+            require(msg.sender == journals[i], "only journal");
             i++;
         }
         _;
