@@ -1,9 +1,9 @@
 pragma solidity ^0.5.1;
 
 contract Document {
-    string title = "<Title>";
-    string[] authors = [<Authors>];
-    string[] sentences = [<Fuzzy Hash Values>];
+    string title = "TITLE";
+    string[] authors = ["Alice", "Bob"];
+    string[] sentences = ["FUZZ_HASH1", "FUZZ_HASH2"];
     address[] journals;
     address owner;
     string[] archives;

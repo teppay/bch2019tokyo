@@ -3,7 +3,7 @@ pragma solidity ^0.5.1;
 import "./document.sol";
 
 contract Journal {
-    string title = "<Title>";
+    string title = "TITLE";
     address owner;
     address[] documents;
 

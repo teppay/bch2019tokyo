@@ -1,8 +1,8 @@
 pragma solidity ^0.5.1;
 
 contract Publisher {
-    string organization = "<ORGANIZATION>";
-    string url = "<URL>";
+    string organization = "ORGANIZATION";
+    string url = "URL";
     bytes certificate;
     address owner;
     struct Journal {
