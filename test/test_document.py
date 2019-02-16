@@ -15,11 +15,14 @@ GETH_URL = 'http://localhost:8545'
 DEVELOPPER_ETH_ADDR = '0x4aadec859f1501fdaf297978df81ba82bf178f72'
 
 def test_document():
-    title = 'TITLE'
-    authors = ['Alice', 'Bob']
-    sentences = ['hash1', 'hash2']
+    with open('../data/sample_document_hash.json') as f:
+        test_data = json.load(f)
+
+    title = test_data['title']
+    authors = test_data['authors']
+    sentences = test_data['sentence']
     print('[1/4] Creating document contract')
-    doc_addr = document_contract_creation('TITLE')
+    doc_addr = document_contract_creation(title)
     if doc_addr:
         print(f'[1/4] Pass: address={doc_addr}')
     else:
