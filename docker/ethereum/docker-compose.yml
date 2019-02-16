@@ -17,6 +17,8 @@ services:
       --rpcport=8545
       --rpccorsdomain='*'
       --rpcapi=admin,db,debug,eth,miner,net,personal,shh,txpool,web3
+      --unlock 0
+      --password "/root/.ethereum/passwd"
     ports:
       - "8545:8545"
       - "8546:8546"
