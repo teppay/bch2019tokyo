@@ -3,22 +3,43 @@ pragma solidity ^0.5.1;
 contract Document {
     string title;
     string[] authors;
+    string[] raw_abstract;
     string[] sentences;
-    address[] journals;
+    string hash_function;
+    address[] publishers;
     address owner;
     string[] archives;
-    bool enclosed = false;
+    bool submitted = false;
 
     constructor(string memory _title) public {
         owner = msg.sender;
         title = _title;
     }
 
+    modifier onlyOwner {
+        require(msg.sender == owner, "only owner");
+        _;
+    }
+
+    modifier onlyPublisher {
+        uint i = 0;
+        while(i < publishers.length){
+            require(msg.sender == publishers[i], "only publisher");
+            i++;
+        }
+        _;
+    }
+
+    modifier Submitted {
+        require(submitted == false, "document submitted");
+        _;
+    }
+
     function getTitle() public view returns(string memory) {
         return title;
     }
 
-    function addAuthor(string memory _author) public ownerUnenclosed {
+    function setAuthor(string memory _author) public Submitted {
         authors.push(_author);
     }
 
@@ -30,7 +51,27 @@ contract Document {
         return authors[index];
     }
 
-    function addSentences(string memory _sentence) public ownerUnenclosed {
+    function setAbstract(string memory _raw_abstract) public Submitted {
+        raw_abstract.push(_raw_abstract);
+    }
+
+    function getNumOfAbstract() public view returns(uint){
+        return raw_abstract.length;
+    }
+
+    function getAbstract(uint index) public view returns(string memory){
+        return raw_abstract[index];
+    }
+
+    function setHashFunction(string memory _hash_function) public Submitted {
+        hash_function = _hash_function;
+    }
+
+    function getHashFunction() public view returns(string memory) {
+        return hash_function;
+    }
+
+    function setSentence(string memory _sentence) public Submitted {
         sentences.push(_sentence);
     }
 
@@ -42,12 +83,20 @@ contract Document {
         return sentences[index];
     }
 
-    function addJournal(address addr) public onlyOwner {
-        journals.push(addr);
-        enclosed = true;
+    function setPublisher(address addr) public onlyOwner {
+        publishers.push(addr);
+        submitted = true;
     }
 
-    function addArchive(string memory info) public onlyJournal {
+    function getNumOfPublishers() public view returns(uint){
+        return publishers.length;
+    }
+
+    function getPublisher(uint index) public view returns(address){
+        return publishers[index];
+    }
+
+    function setArchive(string memory info) public onlyPublisher{
         archives.push(info);
     }
 
@@ -57,24 +106,5 @@ contract Document {
 
     function getArchive(uint index) public view returns(string memory){
         return archives[index];
-    }
-
-    modifier onlyOwner {
-        require(msg.sender == owner, "only owner");
-        _;
-    }
-
-    modifier onlyJournal {
-        uint i = 0;
-        while(i < journals.length){
-            require(msg.sender == journals[i], "only journal");
-            i++;
-        }
-        _;
-    }
-
-    modifier ownerUnenclosed {
-        require(enclosed == false, "owner enclosed");
-        _;
     }
 }
