@@ -21,39 +21,64 @@ def test_document():
     title = test_data['title']
     authors = test_data['authors']
     sentences = test_data['sentence']
-    print('[1/4] Creating document contract')
+    abstract = test_data['abstract']
+    hash_function = 'FuzzyFunction'
+    publishers = ['0x11eeed7eba60ed4774418e6cf2b64e4b1b00ccb4']
+
+    print('[1/7] Creating document contract')
     doc_addr = document_contract_creation(title)
     if doc_addr:
-        print(f'[1/4] Pass: address={doc_addr}')
+        print(f'[1/7] Pass: address={doc_addr}')
     else:
-        print('[1/4] Can\'t pass')
+        print('[1/7] Can\'t pass')
         sys.exit(1)
 
-    print('[2/4] Testing getTitle')
-    try:
-        res = eth_responce2str(call_contract_view(doc_addr, 'getTitle()'))
-    except Exception as e:
-        print(f'[2/4] Can\'t pass: {e}')
-        sys.exit(1)
-    else:
-        if res == title:
-            print(f'[2/4] Pass')
-        else:
-            print('[2/4] Can\'t pass: wrong title')
-            sys.exit(1)
+    # print('[2/7] Testing getTitle')
+    # try:
+    #     res = eth_responce2str(call_contract_view(doc_addr, 'getTitle()'))
+    # except Exception as e:
+    #     print(f'[2/7] Can\'t pass: {e}')
+    #     sys.exit(1)
+    # else:
+    #     if res == title:
+    #         print(f'[2/7] Pass')
+    #     else:
+    #         print('[2/7] Can\'t pass: wrong title')
+    #         sys.exit(1)
 
-    print(f"[3/4] Testing addAuthor and getAuthor {authors}")
-    if test_document_add_get_author(doc_addr, authors):
-        print(f"[3/4] Pass")
-    else:
-        print('[3/4] Can\'t pass')
-        sys.exit(1)
+    # print(f"[3/7] Testing setAuthor and getAuthor {authors}")
+    # if test_document_set_get_author(doc_addr, authors):
+    #     print(f"[3/7] Pass")
+    # else:
+    #     print('[3/7] Can\'t pass')
+    #     sys.exit(1)
 
-    print(f"[4/4] Testing addAuthor and getAuthor {sentences}")
-    if test_document_add_get_sentence(doc_addr, sentences):
-        print(f"[4/4] Pass")
+    # print(f"[4/7] Testing setSentence and getSentence {sentences}")
+    # if test_document_set_get_sentence(doc_addr, sentences):
+    #     print(f"[4/7] Pass")
+    # else:
+    #     print('[4/7] Can\'t pass')
+    #     sys.exit(1)
+
+    # print(f"[5/7] Testing setAbstarct and getAbstract {abstract}")
+    # if test_document_set_get_abstract(doc_addr, abstract):
+    #     print(f"[5/7] Pass")
+    # else:
+    #     print('[5/7] Can\'t pass')
+    #     sys.exit(1)
+
+    # print(f"[6/7] Testing setHashFunction and getHashFunction {hash_function}")
+    # if test_document_set_get_hash_function(doc_addr, hash_function):
+    #     print(f"[6/7] Pass")
+    # else:
+    #     print('[6/7] Can\'t pass')
+    #     sys.exit(1)
+
+    print(f"[7/7] Testing setPublisher and getPublisher {publishers}")
+    if test_document_set_get_publisher(doc_addr, publishers):
+        print(f"[7/7] Pass")
     else:
-        print('[4/4] Can\'t pass')
+        print('[7/7] Can\'t pass')
         sys.exit(1)
 
 
@@ -144,12 +169,16 @@ def call_contract_view(addr, func, arg=None):
 
 def call_contract_sendTransaction(addr, func, arg=None):
     headers = {'Content-type': 'application/json'}
+    print('arg',arg)
 
     data = ''
     data += function2data(func)
     if arg != None:
         if type(arg) == int:
             data += format(arg, '064x')
+        elif arg.startswith('0x'):
+            data += format(int(arg, 16), '064x')
+            print(data)
         elif type(arg) == str:
             data += str2eth_hex(arg)
 
@@ -162,10 +191,10 @@ def call_contract_sendTransaction(addr, func, arg=None):
     ret = json.loads(res.text)['result']
     return ret
 
-def test_document_add_get_author(doc_addr, authors):
+def test_document_set_get_author(doc_addr, authors):
     initial_pending = get_num_pendingTx(DEVELOPPER_ETH_ADDR)
     for idx in range(len(authors)):
-        call_contract_sendTransaction(doc_addr, 'addAuthor(string)', arg=authors[idx])
+        call_contract_sendTransaction(doc_addr, 'setAuthor(string)', arg=authors[idx])
 
     # Txが全部ブロックに入るのを待つ
     while (get_num_pendingTx(DEVELOPPER_ETH_ADDR) - initial_pending) > 0:
@@ -179,17 +208,16 @@ def test_document_add_get_author(doc_addr, authors):
         n = int(call_contract_view(doc_addr, 'getNumOfAuthors()'), 16)
         print(n)
 
-    got_authors = []
     for idx in range(len(authors)):
         a = eth_responce2str(call_contract_view(doc_addr, 'getAuthor(uint256)', arg=idx))
         if a != authors[idx]:
             return False
     return True
 
-def test_document_add_get_sentence(doc_addr, sentences):
+def test_document_set_get_sentence(doc_addr, sentences):
     initial_pending = get_num_pendingTx(DEVELOPPER_ETH_ADDR)
     for idx in range(len(sentences)):
-        call_contract_sendTransaction(doc_addr, 'addSentences(string)', arg=sentences[idx])
+        call_contract_sendTransaction(doc_addr, 'setSentence(string)', arg=sentences[idx])
 
     # Txが全部ブロックに入るのを待つ
     while (get_num_pendingTx(DEVELOPPER_ETH_ADDR) - initial_pending) > 0:
@@ -203,10 +231,65 @@ def test_document_add_get_sentence(doc_addr, sentences):
         n = int(call_contract_view(doc_addr, 'getNumOfSentences()'), 16)
         print(n)
 
-    got_sentences = []
     for idx in range(len(sentences)):
         s = eth_responce2str(call_contract_view(doc_addr, 'getSentence(uint256)', arg=idx))
         if s != sentences[idx]:
+            return False
+    return True
+
+def test_document_set_get_abstract(doc_addr, abstract):
+    initial_pending = get_num_pendingTx(DEVELOPPER_ETH_ADDR)
+    for idx in range(len(abstract)):
+        call_contract_sendTransaction(doc_addr, 'setAbstract(string)', arg=abstract[idx])
+
+    # Txが全部ブロックに入るのを待つ
+    while (get_num_pendingTx(DEVELOPPER_ETH_ADDR) - initial_pending) > 0:
+        print('.', end='')
+        sleep(1)
+
+    n = int(call_contract_view(doc_addr, 'getNumOfAbstract()'), 16)
+    print(n)
+    while n < len(abstract):
+        sleep(1)
+        n = int(call_contract_view(doc_addr, 'getNumOfAbstract()'), 16)
+        print(n)
+
+    for idx in range(len(abstract)):
+        s = eth_responce2str(call_contract_view(doc_addr, 'getAbstract(uint256)', arg=idx))
+        if s != abstract[idx]:
+            return False
+    return True
+
+def test_document_set_get_hash_function(doc_addr, hash_function):
+    call_contract_sendTransaction(doc_addr, 'setHashFunction(string)', arg=hash_function)
+    while True:
+        h = eth_responce2str(call_contract_view(doc_addr, 'getHashFunction()'))
+        print(h, hash_function)
+        sleep(1)
+        if h == hash_function:
+            break
+    return True
+
+def test_document_set_get_publisher(doc_addr, publishers):
+    initial_pending = get_num_pendingTx(DEVELOPPER_ETH_ADDR)
+    for idx in range(len(publishers)):
+        call_contract_sendTransaction(doc_addr, 'setPublisher(string)', arg=publishers[idx])
+
+    # Txが全部ブロックに入るのを待つ
+    while (get_num_pendingTx(DEVELOPPER_ETH_ADDR) - initial_pending) > 0:
+        print('.', end='')
+        sleep(1)
+
+    n = int(call_contract_view(doc_addr, 'getNumOfPublishers()'), 16)
+    print(n)
+    while n < len(publishers):
+        sleep(1)
+        n = int(call_contract_view(doc_addr, 'getNumOfPublishers()'), 16)
+        print(n)
+
+    for idx in range(len(publishers)):
+        s = eth_responce2str(call_contract_view(doc_addr, 'getPublisher(uint256)', arg=idx))
+        if s != publishers[idx]:
             return False
     return True
 
