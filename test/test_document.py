@@ -33,46 +33,46 @@ def test_document():
         print('[1/7] Can\'t pass')
         sys.exit(1)
 
-    # print('[2/7] Testing getTitle')
-    # try:
-    #     res = eth_responce2str(call_contract_view(doc_addr, 'getTitle()'))
-    # except Exception as e:
-    #     print(f'[2/7] Can\'t pass: {e}')
-    #     sys.exit(1)
-    # else:
-    #     if res == title:
-    #         print(f'[2/7] Pass')
-    #     else:
-    #         print('[2/7] Can\'t pass: wrong title')
-    #         sys.exit(1)
+    print('[2/7] Testing getTitle')
+    try:
+        res = eth_responce2str(call_contract_view(doc_addr, 'getTitle()'))
+    except Exception as e:
+        print(f'[2/7] Can\'t pass: {e}')
+        sys.exit(1)
+    else:
+        if res == title:
+            print(f'[2/7] Pass')
+        else:
+            print('[2/7] Can\'t pass: wrong title')
+            sys.exit(1)
 
-    # print(f"[3/7] Testing setAuthor and getAuthor {authors}")
-    # if test_document_set_get_author(doc_addr, authors):
-    #     print(f"[3/7] Pass")
-    # else:
-    #     print('[3/7] Can\'t pass')
-    #     sys.exit(1)
+    print(f"[3/7] Testing setAuthor and getAuthor {authors}")
+    if test_document_set_get_author(doc_addr, authors):
+        print(f"[3/7] Pass")
+    else:
+        print('[3/7] Can\'t pass')
+        sys.exit(1)
 
-    # print(f"[4/7] Testing setSentence and getSentence {sentences}")
-    # if test_document_set_get_sentence(doc_addr, sentences):
-    #     print(f"[4/7] Pass")
-    # else:
-    #     print('[4/7] Can\'t pass')
-    #     sys.exit(1)
+    print(f"[4/7] Testing setSentence and getSentence {sentences}")
+    if test_document_set_get_sentence(doc_addr, sentences):
+        print(f"[4/7] Pass")
+    else:
+        print('[4/7] Can\'t pass')
+        sys.exit(1)
 
-    # print(f"[5/7] Testing setAbstarct and getAbstract {abstract}")
-    # if test_document_set_get_abstract(doc_addr, abstract):
-    #     print(f"[5/7] Pass")
-    # else:
-    #     print('[5/7] Can\'t pass')
-    #     sys.exit(1)
+    print(f"[5/7] Testing setAbstarct and getAbstract {abstract}")
+    if test_document_set_get_abstract(doc_addr, abstract):
+        print(f"[5/7] Pass")
+    else:
+        print('[5/7] Can\'t pass')
+        sys.exit(1)
 
-    # print(f"[6/7] Testing setHashFunction and getHashFunction {hash_function}")
-    # if test_document_set_get_hash_function(doc_addr, hash_function):
-    #     print(f"[6/7] Pass")
-    # else:
-    #     print('[6/7] Can\'t pass')
-    #     sys.exit(1)
+    print(f"[6/7] Testing setHashFunction and getHashFunction {hash_function}")
+    if test_document_set_get_hash_function(doc_addr, hash_function):
+        print(f"[6/7] Pass")
+    else:
+        print('[6/7] Can\'t pass')
+        sys.exit(1)
 
     print(f"[7/7] Testing setPublisher and getPublisher {publishers}")
     if test_document_set_get_publisher(doc_addr, publishers):
